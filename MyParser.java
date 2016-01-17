@@ -1,52 +1,33 @@
 package xml;
 
-import java.io.FileReader;
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 public class MyParser extends DefaultHandler{
-	String result = "";
 	
-		public static void main (String args[])throws Exception {
-		
-		XMLReader xr = XMLReaderFactory.createXMLReader();
-		MyParser handler = new MyParser();
-		xr.setContentHandler(handler);
-		xr.setErrorHandler(handler);
-		
-	    FileReader r = new FileReader("f:\\Обучение\\Java\\xml\\computerStore.xml");
-	    xr.parse(new InputSource(r));
-
+	public static void main(String []Args){
+	SAXParserFactory parserF = SAXParserFactory.newInstance();
+	Handler handler = new Handler();
+	try{
+		SAXParser saxparser = parserF.newSAXParser();
+		saxparser.parse(new File("f:\\Обучение\\Java\\xml\\src\\xml\\computerStore.xml"), handler);
+	} catch(ParserConfigurationException | SAXException e){
+		e.printStackTrace();
+	} catch (IOException e){
+		e.printStackTrace();
 	}
 	
-	public MyParser() {
-		super();
+	Map<Integer,String> data = handler.getData();
+	for (Map.Entry<Integer,String> dMap: data.entrySet() ) {
+		System.out.println(" id: " + dMap.getKey() + " - title: " + dMap.getValue());
 	}
-	
-	public void startDocument ()
-	{
-	System.out.println("Start document");
-	}
-	 
-	public void endDocument ()
-	{
-	System.out.println("End document");
-	}
-
-
-	public void startElement (String uri, String name, String qName, Attributes atts){
-		//System.out.println(qName) ;
-		for (int att = 0; att < atts.getLength(); att++) {
-		      String attName = atts.getQName(att);
-		      System.out.println(" " + attName + ": " + atts.getValue(attName));
-		    }
-	  }
-	
-	
-}
+}}
 
