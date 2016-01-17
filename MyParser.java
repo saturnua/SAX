@@ -12,12 +12,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 public class MyParser extends DefaultHandler{
 	String result = "";
 	
-	public void printIndent(int indentSize) {
-	    for (int s = 0; s < indentSize; s++) {
-	      System.out.print(" ");
-	    }
-	  }
-	public static void main (String args[])throws Exception {
+		public static void main (String args[])throws Exception {
 		
 		XMLReader xr = XMLReaderFactory.createXMLReader();
 		MyParser handler = new MyParser();
